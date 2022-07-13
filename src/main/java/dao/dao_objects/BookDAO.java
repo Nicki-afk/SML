@@ -9,37 +9,31 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BookDAO extends Dao {
-
-
     private HashMap<String,Book> mapBooksWithNameAndBookObjects = new HashMap<>();
- //   @Autowired private Properties propertiesWithDataForDataBase;
-
     private DatabaseConfigurationDataProvider providerConfigurationHibernate;
 
     public BookDAO(DatabaseConfigurationDataProvider providerConfigurationHibernate){
-        this.providerConfigurationHibernate = providerConfigurationHibernate;
+
+        if(hibernateComponentIsInitialized()){
+            setDataProviderForHibernateComponents(providerConfigurationHibernate);
+        }
     }
 
     public BookDAO(){}
 
 
     @Override
-    public void initMethod() {
-
-
+    public void openFirstSessionAndGetDataLibraryObjects() {
         session = factory.openSession();
-
         session.beginTransaction();
         List<Book>bookList = session.createQuery("SELECT a FROM Book a" , Book.class).getResultList();
         session.getTransaction().commit();
 
 
-        // copy to HashMap
         if(bookList != null) {
             for (Book book : bookList) {
                 mapBooksWithNameAndBookObjects.put(book.getName(), book);}
         }
-
 
     }
 
@@ -73,9 +67,7 @@ public class BookDAO extends Dao {
 
     @Override
     public Boolean deleteLibraryObjectInLibrary(LibraryObject object) {
-
         try{
-
             session.beginTransaction();
             session.delete(object);
             session.getTransaction().commit();

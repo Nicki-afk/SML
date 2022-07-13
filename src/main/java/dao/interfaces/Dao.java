@@ -1,21 +1,20 @@
 package dao.interfaces;
-
-import dao.Book;
-import dao.DetailsBook;
-import dao.Profile;
+import managers.DatabaseConfigurationDataProvider;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Properties;
 
 public abstract class Dao {
 
 
     protected SessionFactory factory;
     protected Session session;
+    private DatabaseConfigurationDataProvider dataProviderForHibernateComponents;
+
+
+//    public Dao(DatabaseConfigurationDataProvider dataProviderForHibernateComponents){
+//        this.dataProviderForHibernateComponents = dataProviderForHibernateComponents;
+//        this.factory = dataProviderForHibernateComponents.getSessionFactory();
+//    }
 
 
 
@@ -27,7 +26,12 @@ public abstract class Dao {
 
 
 
-    public abstract void initMethod();
+
+    protected boolean hibernateComponentIsInitialized(){
+        return factory == null || dataProviderForHibernateComponents == null;
+    }
+
+    public abstract void openFirstSessionAndGetDataLibraryObjects();
     public abstract void destroyMethod();
 
 
@@ -36,7 +40,8 @@ public abstract class Dao {
     public abstract Boolean deleteLibraryObjectInLibrary(LibraryObject object);
     public abstract Boolean updateLibraryObjectInLibrary(LibraryObject object);
 
-
-
-
+    public void setDataProviderForHibernateComponents(DatabaseConfigurationDataProvider provider) {
+        this.dataProviderForHibernateComponents = provider;
+        this.factory = dataProviderForHibernateComponents.getSessionFactory();
+    }
 }

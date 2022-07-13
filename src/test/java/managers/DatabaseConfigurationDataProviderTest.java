@@ -25,6 +25,10 @@ class DatabaseConfigurationDataProviderTest {
         assertTrue(DatabaseConfigurationDataProvider.IS_FIRST_START_APPLICATION);
     }
 
+    @Test
+    public void isNotFirstStartApplication(){
+        assertFalse(DatabaseConfigurationDataProvider.IS_FIRST_START_APPLICATION);
+    }
 
     @Test
     public void nextStartApplication(){
