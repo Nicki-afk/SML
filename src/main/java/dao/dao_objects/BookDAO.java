@@ -12,6 +12,12 @@ public class BookDAO extends Dao {
     private Map<String,Book> mapBooksWithNameAndBookObjects = new LinkedHashMap<>();
 
 
+    {
+        if(hibernateComponentsIsInit()){
+            abstractInitHibernateComponents();
+        }
+    }
+
 
     public BookDAO(){}
 

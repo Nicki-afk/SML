@@ -19,12 +19,16 @@ public abstract class Dao {
     protected void abstractInitHibernateComponents(){
         Configuration configurationForSessionFactory = new Configuration();
         configurationForSessionFactory
-                .configure("hibernate.cfg.xml")
+                .configure("hibernate/hibernate.cfg.xml")
                 .addAnnotatedClass(Book.class)
                 .addAnnotatedClass(Profile.class)
                 .addAnnotatedClass(DetailsBook.class);
         this.factory = configurationForSessionFactory.buildSessionFactory();
         this.session = factory.openSession();
+    }
+
+    protected boolean hibernateComponentsIsInit(){
+        return session == null || factory == null;
     }
 
 
