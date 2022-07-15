@@ -3,44 +3,34 @@ package dao.dao_objects;
 import dao.Book;
 import dao.interfaces.Dao;
 import dao.interfaces.LibraryObject;
-import managers.DatabaseConfigurationDataProvider;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BookDAO extends Dao {
-    private HashMap<String,Book> mapBooksWithNameAndBookObjects = new HashMap<>();
-    private DatabaseConfigurationDataProvider providerConfigurationHibernate;
+    private Map<String,Book> mapBooksWithNameAndBookObjects = new LinkedHashMap<>();
 
-    public BookDAO(DatabaseConfigurationDataProvider providerConfigurationHibernate){
 
-        if(hibernateComponentIsInitialized()){
-            setDataProviderForHibernateComponents(providerConfigurationHibernate);
-        }
-    }
 
     public BookDAO(){}
 
 
     @Override
     public void openFirstSessionAndGetDataLibraryObjects() {
-        session = factory.openSession();
-        session.beginTransaction();
-        List<Book>bookList = session.createQuery("SELECT a FROM Book a" , Book.class).getResultList();
-        session.getTransaction().commit();
 
-
-        if(bookList != null) {
-            for (Book book : bookList) {
-                mapBooksWithNameAndBookObjects.put(book.getName(), book);}
-        }
-
-    }
-
-    @Override
-    public void destroyMethod() {
+        super.session.beginTransaction();
+        this.mapBooksWithNameAndBookObjects =
+                (Map<String, Book>)
+                        session
+                        .createQuery("SELECT a FROM Book a")
+                        .getResultList()
+                        .stream()
+                        .collect(Collectors.toMap(Book::getName , book -> book));
 
     }
+
+
 
     @Override
     public Boolean addLibraryObjectInLibrary(LibraryObject object) {
@@ -112,7 +102,7 @@ public class BookDAO extends Dao {
     }
 
 
-    public HashMap<String,Book> getMapBooksWithNameAndBookObjects() {
+    public Map<String,Book> getMapBooksWithNameAndBookObjects() {
         return mapBooksWithNameAndBookObjects;
     }
 

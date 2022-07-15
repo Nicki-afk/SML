@@ -1,38 +1,35 @@
 package dao.interfaces;
-import managers.DatabaseConfigurationDataProvider;
+import dao.Book;
+import dao.DetailsBook;
+import dao.Profile;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public abstract class Dao {
 
 
     protected SessionFactory factory;
     protected Session session;
-    private DatabaseConfigurationDataProvider dataProviderForHibernateComponents;
 
-
-//    public Dao(DatabaseConfigurationDataProvider dataProviderForHibernateComponents){
-//        this.dataProviderForHibernateComponents = dataProviderForHibernateComponents;
-//        this.factory = dataProviderForHibernateComponents.getSessionFactory();
-//    }
-
-
-
-//    public Dao(SessionFactory factory){
-//        this.factory = factory;
-//    }
 
     public Dao(){}
 
 
-
-
-    protected boolean hibernateComponentIsInitialized(){
-        return factory == null || dataProviderForHibernateComponents == null;
+    protected void abstractInitHibernateComponents(){
+        Configuration configurationForSessionFactory = new Configuration();
+        configurationForSessionFactory
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Book.class)
+                .addAnnotatedClass(Profile.class)
+                .addAnnotatedClass(DetailsBook.class);
+        this.factory = configurationForSessionFactory.buildSessionFactory();
+        this.session = factory.openSession();
     }
 
+
+
     public abstract void openFirstSessionAndGetDataLibraryObjects();
-    public abstract void destroyMethod();
 
 
 
@@ -40,8 +37,5 @@ public abstract class Dao {
     public abstract Boolean deleteLibraryObjectInLibrary(LibraryObject object);
     public abstract Boolean updateLibraryObjectInLibrary(LibraryObject object);
 
-    public void setDataProviderForHibernateComponents(DatabaseConfigurationDataProvider provider) {
-        this.dataProviderForHibernateComponents = provider;
-        this.factory = dataProviderForHibernateComponents.getSessionFactory();
-    }
+
 }
