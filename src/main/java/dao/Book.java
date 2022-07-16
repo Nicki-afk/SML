@@ -15,7 +15,7 @@ public class Book extends LibraryObject {
 
 
 
-    @Column private String name;
+    @Column(name = "nbook") private String name;
 
 
 

@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "details_books")
+@Table(name = "book_details")
 public class DetailsBook extends LibraryObject {
 
 
@@ -19,8 +19,9 @@ public class DetailsBook extends LibraryObject {
     @Column(name = "genre")                  private String theGenreBook;
     @Column(name = "date_of_registration")   private String theDateOfRegistrationBook;
     @Column(name = "status")                 private String theStatusBookAvailableOrNotAvailable;
+    @Column(name = "sdescription")           private String theDescriptionStatusBook;
     @Column(name = "copy")                   private Integer theCopiesBook;
-    @Column(name = "copy_available")         private Integer theCopiesBookAvailable;
+    @Column(name = "acopy")                  private Integer theCopiesBookAvailable;
 
 
     @OneToOne(cascade = CascadeType.ALL)
