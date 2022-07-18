@@ -3,6 +3,7 @@ package dao;
 import dao.interfaces.LibraryObject;
 
 import javax.persistence.*;
+import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 
 @Entity
@@ -14,10 +15,12 @@ public class Profile extends LibraryObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column private Long id;
 
-    @Column(name = "name")           private String theFirstnameProfile;
-    @Column(name = "lastname")       private String theLastnameProfile;
-    @Column(name = "number_phone")   private String theNumberPhoneProfile;
-    @Column(name = "email")          private String theEmailProfile;
+    @Column(name = "name")             private String theFirstnameProfile;
+    @Column(name = "lastname")         private String theLastnameProfile;
+    @Column(name = "nphone")           private String theNumberPhoneProfile;
+    @Column(name = "email")            private String theEmailProfile;
+    @Column(name = "staccount")        private String theStatusAccountProfile;
+    @Column(name = "dstatus")          private String theDescriptionStatusAccountProfile;
 
 
     @ManyToMany(cascade = CascadeType.ALL)
